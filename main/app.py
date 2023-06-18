@@ -1,9 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from extensions import db
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost:3306/dukaan'
-db = SQLAlchemy(app)
+
+def create_app():
+    app = Flask(__name__)
+    db.init_app(app)
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -17,15 +20,17 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+
 with app.app_context():
     admin = User('admin', 'admin@example.com')
-    
-    db.create_all() # In case user table doesn't exists already. Else remove it.    
-    
+
+    # In case user table doesn't exists already. Else remove it.
+    db.create_all()
+
     db.session.add(admin)
-    
-    db.session.commit() # This is needed to write the changes to database
-    
+
+    db.session.commit()  # This is needed to write the changes to database
+
     User.query.all()
-    
+
     User.query.filter_by(username='admin').first()
