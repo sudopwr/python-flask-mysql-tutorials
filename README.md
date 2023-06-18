@@ -73,3 +73,10 @@ poetry install
 cd main
 poetry run flask run
 ```
+
+## Clean cache
+
+```
+poetry cache list
+poetry cache clear <name> --all
+```
