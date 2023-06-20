@@ -1,12 +1,15 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from extensions import db
 
+from main.extensions import db
+from main.config import config
+from main.modules.products import products_api_bpl 
 
-def create_app():
-    app = Flask(__name__)
-    db.init_app(app)
-
+app = Flask(__name__)
+app.config.from_object(config.get(os.getenv("APP_MODE")))
+db.init_app(app)
+app.register_blueprint(products_api_bpl)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,16 +24,16 @@ class User(db.Model):
         return '<User %r>' % self.username
 
 
-with app.app_context():
-    admin = User('admin', 'admin@example.com')
+# with app.app_context():
+#     admin = User('admin', 'admin@example.com')
 
-    # In case user table doesn't exists already. Else remove it.
-    db.create_all()
+#     # In case user table doesn't exists already. Else remove it.
+#     db.create_all()
 
-    db.session.add(admin)
+#     db.session.add(admin)
 
-    db.session.commit()  # This is needed to write the changes to database
+#     db.session.commit()  # This is needed to write the changes to database
 
-    User.query.all()
+#     User.query.all()
 
-    User.query.filter_by(username='admin').first()
+#     User.query.filter_by(username='admin').first()
