@@ -16,25 +16,48 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
+    address = db.Column(db.String(200), nullable=False)
 
-    def __init__(self, username, email):
+    def __init__(self, username, email, address):
         self.username = username
         self.email = email
+        self.address = address
 
     def __repr__(self):
         return '<User %r>' % self.username
 
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    description = db.Column(db.String(500), nullable=False)
+    image = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Double, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
 
-# with app.app_context():
-#     admin = User('admin', 'admin@example.com')
+    def __init__(self, name, description, image, price, quantity):
+        self.name = name
+        self.description = description
+        self.image = image
+        self.price = price
+        self.quantity = quantity
 
-#     # In case user table doesn't exists already. Else remove it.
-#     db.create_all()
+    def __repr__(self):
+        return '<product %r>' % self.name
 
-#     db.session.add(admin)
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-#     db.session.commit()  # This is needed to write the changes to database
+    product = db.relationship('product', foreign_keys = 'order.product_id')
+    user = db.relationship('user', foreign_keys = 'order.user_id')
 
-#     User.query.all()
+    def __init__(self, product_id, user_id):
+        self.product_id = product_id
+        self.user_id = user_id
 
-#     User.query.filter_by(username='admin').first()
+    def __repr__(self):
+        return '<Orders %r>' % self.id
+
+with app.app_context():
+    db.create_all()
