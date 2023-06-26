@@ -76,7 +76,11 @@ poetry run flask run
 
 ## Clean cache
 
-```
+```sh
 poetry cache list
 poetry cache clear <name> --all
+
+# or
+
+poetry cache clear pypi --all
 ```
