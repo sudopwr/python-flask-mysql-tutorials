@@ -12,7 +12,7 @@ def verify():
     google_jwt = request_json["jwt"]
     try:
         id_info = id_token.verify_oauth2_token(google_jwt, requests.Request(), current_app.config['GOOGLE_CLIENT_ID'])
-        print(id_info["name"])
-        return { "token": "jwt" }
+        user_jwt = jwt.encode({ "id": id_info["sub"] }, current_app.config['JWT_SECRET'], algorithms=['HS256'])
+        return { "token": user_jwt }
     except ValueError:
         return { "message": "Invalid request" }, 400
