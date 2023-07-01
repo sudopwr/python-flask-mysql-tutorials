@@ -3,7 +3,7 @@ from main.extensions import db
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.String(80), db.ForeignKey('user.id'), nullable=False)
 
     product = db.relationship('product', foreign_keys = 'order.product_id')
     user = db.relationship('user', foreign_keys = 'order.user_id')
