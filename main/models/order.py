@@ -5,9 +5,6 @@ class Order(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     user_id = db.Column(db.String(80), db.ForeignKey('user.id'), nullable=False)
 
-    product = db.relationship('product', foreign_keys = 'order.product_id')
-    user = db.relationship('user', foreign_keys = 'order.user_id')
-
     def __init__(self, product_id, user_id):
         self.product_id = product_id
         self.user_id = user_id

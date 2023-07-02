@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 from main.extensions import db
 from main.config import config
@@ -10,6 +11,7 @@ from main.models import *
 app = Flask(__name__)
 app.config.from_object(config.get(os.getenv("APP_MODE")))
 db.init_app(app)
+cors = CORS(app)
 register_route(app)
 
 with app.app_context():
