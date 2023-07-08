@@ -3,6 +3,7 @@ import jwt
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from flask_cors import cross_origin
+import datetime
 
 from main.models import User
 from main.extensions import db
@@ -16,7 +17,8 @@ def verify():
     request_json = request.get_json()
     google_jwt = request_json["jwt"]
     try:
-        id_info = id_token.verify_oauth2_token(google_jwt, requests.Request(), current_app.config['GOOGLE_CLIENT_ID'])
+        id_info = id_token.verify_oauth2_token(
+            google_jwt, requests.Request(), current_app.config['GOOGLE_CLIENT_ID'])
         google_user_id = id_info["sub"]
         user = User.query.get(google_user_id)
         if user is None:
@@ -30,7 +32,16 @@ def verify():
             db.session.add(user)
             db.session.commit()
 
-        user_jwt = jwt.encode({ "id": google_user_id }, current_app.config["JWT_SECRET"], algorithm="HS256")
-        return { "token": user_jwt }
+        payload = {
+            "id": google_user_id,
+            "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(hours=1)
+        }
+
+        if current_app.config['ADMIN_EMAIL']:
+            payload["role"] = "admin"
+
+        user_jwt = jwt.encode(
+            payload, current_app.config["JWT_SECRET"], algorithm="HS256")
+        return {"token": user_jwt}
     except ValueError:
-        return { "message": "Invalid request" }, 400
+        return {"message": "Invalid request"}, 400

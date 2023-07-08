@@ -7,6 +7,7 @@ class ProductionConfig:
     SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI")
     GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
     JWT_SECRET = os.getenv("JWT_SECRET")
+    ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
 
 
 class DevelopmentConfig:
@@ -15,7 +16,7 @@ class DevelopmentConfig:
     SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI")
     GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
     JWT_SECRET = os.getenv("JWT_SECRET")
-
+    ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
 
 config = {
     "development": DevelopmentConfig,
