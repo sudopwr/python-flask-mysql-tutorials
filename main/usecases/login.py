@@ -37,7 +37,7 @@ def verify():
             "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(hours=1)
         }
 
-        if current_app.config['ADMIN_EMAIL']:
+        if current_app.config['ADMIN_EMAIL'] == user.email:
             payload["role"] = "admin"
 
         user_jwt = jwt.encode(
