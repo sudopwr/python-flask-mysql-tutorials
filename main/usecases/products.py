@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from main.models import Product
 from main.extensions import db
 
@@ -14,5 +14,14 @@ def add_product():
         db.session.add(product)
         db.session.commit()
         return '', 201
+    except:
+        return {"message": "Failed to add product"}, 400
+
+@products_api_bpl.route("/products", methods=["get"])
+def get_product():
+    try:
+        products = Product.query.all()
+        print(products)
+        return jsonify(products), 200
     except:
         return {"message": "Failed to add product"}, 400

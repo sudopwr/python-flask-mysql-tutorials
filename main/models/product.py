@@ -1,12 +1,14 @@
+from dataclasses import dataclass
 from main.extensions import db
 
+@dataclass
 class Product(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), nullable=False)
-    description = db.Column(db.String(500), nullable=False)
-    image = db.Column(db.String(100), nullable=False)
-    price = db.Column(db.Double, nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
+    id: str = db.Column(db.Integer, primary_key=True)
+    name: str = db.Column(db.String(120), nullable=False)
+    description: str = db.Column(db.String(500), nullable=False)
+    image: str = db.Column(db.String(100), nullable=False)
+    price: int = db.Column(db.Double, nullable=False)
+    quantity: int = db.Column(db.Integer, nullable=False)
 
     def __init__(self, name, description, image, price, quantity):
         self.name = name
