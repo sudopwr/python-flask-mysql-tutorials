@@ -39,6 +39,8 @@ def verify():
 
         if current_app.config['ADMIN_EMAIL'] == user.email:
             payload["role"] = "admin"
+        else:
+            payload["role"] = "user"
 
         user_jwt = jwt.encode(
             payload, current_app.config["JWT_SECRET"], algorithm="HS256")
