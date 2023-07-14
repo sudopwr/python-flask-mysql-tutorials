@@ -13,7 +13,7 @@ def add_product():
     try:
         request_json = request.get_json()
         product = Product(
-            name=request_json["name"], price=request_json["price"], description=request_json["description"], quantity=request_json["quantity"], image='test.jpg')
+            name=request_json["name"], price=request_json["price"], description=request_json["description"], quantity=request_json["quantity"], image=request_json["image"])
         db.session.add(product)
         db.session.commit()
         return '', 201
