@@ -17,7 +17,8 @@ def add_product():
         db.session.add(product)
         db.session.commit()
         return '', 201
-    except:
+    except Exception as e:
+        print(e)
         return {"message": "Failed to add product"}, 400
 
 
@@ -25,7 +26,6 @@ def add_product():
 def get_product():
     try:
         products = Product.query.all()
-        print(products)
         return jsonify(products), 200
     except:
         return {"message": "Failed to add product"}, 400

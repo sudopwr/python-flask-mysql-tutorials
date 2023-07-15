@@ -10,7 +10,6 @@ def login_required(f):
         if token == False:
             return {"error": msg}, 401
         try:
-            print(token)
             current_user = jwt.decode(
                 token, current_app.config["JWT_SECRET"], algorithms=["HS256"])
             g.user = current_user
