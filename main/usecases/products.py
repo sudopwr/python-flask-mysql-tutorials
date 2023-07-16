@@ -29,3 +29,11 @@ def get_product():
         return jsonify(products), 200
     except:
         return {"message": "Failed to add product"}, 400
+
+@products_api_bpl.route("/products/<id>", methods=["get"])
+def get_product_by_id(id):
+    try:
+        product = Product.query.get(id)
+        return jsonify(product), 200
+    except:
+        return {"message": "Failed to add product"}, 400
