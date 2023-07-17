@@ -9,7 +9,7 @@ class Order(db.Model):
     user_id: int = db.Column(db.String(80), db.ForeignKey('user.id'), nullable=False)
     quantity: int = db.Column(db.Integer, nullable=False)
     status: str = db.Column(db.String(100), nullable=False)
-    order_date = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    order_date: str = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
 
     def __repr__(self):
         return '<Orders %r>' % self.id
