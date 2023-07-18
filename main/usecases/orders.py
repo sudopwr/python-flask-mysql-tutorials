@@ -26,8 +26,26 @@ def add_order():
 @should_admin
 def get_order():
     try:
-        orders = Order.query.all()
-        return jsonify(orders), 200
+        orders = Order.query\
+            .join(User, Order.user_id == User.id)\
+            .join(Product, Order.product_id == Product.id)\
+            .add_columns(User.name, Product.name).all()
+        result = []
+        for order in orders:
+            _order = order[0]
+            _order = {
+                "id": _order.id,
+                "product_id": _order.product_id,
+                "user_id": _order.user_id,
+                "quantity": _order.quantity,
+                "status": _order.status,
+                "order_date": _order.order_date,
+                "user_name": order[1],
+                "product_name": order[2]
+            }
+            result.append(_order)
+
+        return jsonify(result), 200
     except:
         return {"message": "Failed to get order"}, 400
 
