@@ -37,3 +37,15 @@ def get_product_by_id(id):
         return jsonify(product), 200
     except:
         return {"message": "Failed to add product"}, 400
+
+@products_api_bpl.route("/products/<id>", methods=["delete"])
+@login_required
+@should_admin
+def delete_product_by_id(id):
+    try:
+        product = Product.query.get_or_404(id)
+        db.session.delete(product)
+        db.session.commit()
+        return '', 200
+    except:
+        return {"message": "Failed to delete product"}, 400
