@@ -41,7 +41,7 @@ def get_product_by_id(id):
 @products_api_bpl.route("/products/<id>", methods=["delete"])
 @login_required
 @should_admin
-def delete_product_by_id(id):
+def update_product(id):
     try:
         product = Product.query.get_or_404(id)
         db.session.delete(product)
@@ -49,3 +49,23 @@ def delete_product_by_id(id):
         return '', 200
     except:
         return {"message": "Failed to delete product"}, 400
+
+@products_api_bpl.route("/products/<id>", methods=["put"])
+@login_required
+@should_admin
+def delete_product_by_id(id):
+    try:
+        request_json = request.get_json()
+        product = Product.query.get_or_404(id)
+        product.name=request_json["name"]
+        product.price=request_json["price"]
+        product.description=request_json["description"]
+        product.quantity=request_json["quantity"]
+        if "image" in request_json:
+            product.image=request_json["image"]
+
+        db.session.commit()
+        return '', 200
+    except Exception as e:
+        print(e)
+        return {"message": "Failed to update product"}, 400
