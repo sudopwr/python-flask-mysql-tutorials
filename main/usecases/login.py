@@ -2,7 +2,6 @@ from flask import Blueprint, request, current_app
 import jwt
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from flask_cors import cross_origin
 import datetime
 
 from main.models import User
@@ -12,7 +11,6 @@ login_api_bpl = Blueprint("Login", __name__)
 
 
 @login_api_bpl.route("/login", methods=["post"])
-@cross_origin()
 def verify():
     request_json = request.get_json()
     google_jwt = request_json["jwt"]
