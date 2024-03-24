@@ -89,3 +89,18 @@ def get_order_by_id(id):
         return jsonify(order), 200
     except:
         return {"message": "Failed to get order"}, 400
+
+
+@orders_api_bpl.route("/orders/<id>", methods=["put"])
+@login_required
+@should_admin
+def update_order_status(id):
+    try:
+        request_json = request.get_json()
+        order = Order.query.get_or_404(id)
+        order.status = request_json["status"]
+        db.session.commit()
+        return '', 200
+    except Exception as e:
+        print(e)
+        return {"message": "Failed to update order"}, 400
